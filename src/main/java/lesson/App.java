@@ -39,13 +39,13 @@ public class App {
         if(!pl.isSelected()){
             pl.click();
         }
-        Thread.sleep(10000);
+        WebElement close = driver.findElement(By.xpath("//button[@class='close']"));
+        close.click();
+        Thread.sleep(2000);
         List<WebElement> bookList = driver.findElements(By.xpath("//button[@data-test-id='tile-buy-button']"));
-        Thread.sleep(10000);
+        Thread.sleep(2000);
         bookList.get(1).click();
-//        List<WebElement> bookLisuuuuut = driver.findElements(By.xpath("//span[@data-test-id='tile-name']"));
-//        Thread.sleep(1000);
-//        System.out.println(bookLisuuuuut.get(1).getText());
+
 
     }
 }
