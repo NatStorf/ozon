@@ -11,9 +11,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import java.util.List;
+import java.util.Random;
 
 public class BuyBook {
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         System.setProperty("webdriver.chrome.driver",
                 "C:\\chromedriver\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
@@ -45,18 +46,23 @@ public class BuyBook {
         }
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span/span[contains(text(),'Языки программирования')]")));
 
-        List<WebElement> bookList = driver.findElements(By.xpath("//button[@data-test-id='tile-buy-button']"));
-        bookList.get(4).click();
-        if (bookList.get(4).isDisplayed()) {
-            System.out.println("Книга добавлена в корзину");
+        List<WebElement> buyButtonList = driver.findElements(By.xpath("//button[@data-test-id='tile-buy-button']"));
+        Random rnd = new Random();
+        int i = rnd.nextInt(buyButtonList.size() + 1) - 1;
+        List<WebElement> buyTileName = driver.findElements(By.xpath("//span[@data-test-id='tile-name']"));
+        String buyTitle = buyTileName.get(i).getText();
+        buyButtonList.get(i).click();
+        if (buyButtonList.get(i).isDisplayed()) {
+            System.out.println("Книга " + "\"" + buyTitle + "\"" + " добавлена в корзину");
         }
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='tile-builder-action buy-button-container m-with-count m-default']")));
 
         driver.findElement(By.xpath("//a//*[contains(text(),'Корзина')]")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='cart-item']")));
-        List<WebElement> cartitem = driver.findElements(By.xpath("//div[@class='cart-item']"));
-        if (!cartitem.isEmpty()) {
-            System.out.println("Книга в корзине");
+        WebElement cartTileName = driver.findElement(By.xpath("//*[@class='title']/span"));
+        String cartTitle = cartTileName.getText();
+        if (buyTitle.contains(cartTitle)) {
+            System.out.println("Книга " + "\"" + cartTitle + "\"" + " в корзине");
         }
 
     }
